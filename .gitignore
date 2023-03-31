@@ -2,7 +2,6 @@
 .project
 .settings/
 target/
-# NetBeans specific #
 nbproject/private/
 build/
 nbbuild/
