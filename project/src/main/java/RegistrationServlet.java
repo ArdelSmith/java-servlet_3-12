@@ -19,8 +19,9 @@ public class RegistrationServlet extends HttpServlet {
     }
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-		UserCreationService.CreateUser(request.getParameter("username").toString(), request.getParameter("password").toString(), 
+		Boolean result = UserCreationService.CreateUser(request.getParameter("username").toString(), request.getParameter("password").toString(), 
 				request.getParameter("email").toString());
-		response.sendRedirect(request.getContextPath() + "/auth");
+		if (result) response.sendRedirect(request.getContextPath() + "/auth");
+		else response.sendRedirect(request.getContextPath() + "/registration");
     }
 }
