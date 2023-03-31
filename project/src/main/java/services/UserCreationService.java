@@ -33,7 +33,7 @@ public class UserCreationService{
 			return false;
 		}
 		for (int i = 0; i < Data.passwords.size(); i++) {
-			if (Data.emails.containsKey(username) || Data.emails.containsKey(email)) {
+			if (Data.emails.containsKey(email) || Data.emails.containsValue(username)) {
 				return false;
 			}
 		}
