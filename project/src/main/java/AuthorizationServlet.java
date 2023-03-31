@@ -5,7 +5,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-
+import services.*;
 import java.io.*;
 
 @WebServlet("/auth")
@@ -14,16 +14,22 @@ public class AuthorizationServlet extends HttpServlet {
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        // Проверяем, авторизован ли пользователь
-        if (request.getParameter("username").toString() != null) {
-            // Если пользователь уже авторизован, перенаправляем на mypage.jsp
-    		HttpSession session = request.getSession(true);
-    		session.setAttribute("username", request.getParameter("username").toString());
-    		request.setAttribute("path", "/files?path=C:/Users/" + request.getParameter("username").toString());
-        	response.sendRedirect(request.getContextPath() + "/files?path=C:/Users/" + request.getParameter("username").toString());
-        } else {
-            response.sendRedirect(request.getContextPath() + "/");
-        }
+    	if (request.getParameter("username").equals(null) || request.getParameter("password") == null) {
+    		response.sendRedirect(request.getContextPath() + "/");
+    		return;
+    	}
+    	else {
+    		if (UserLoginService.TryLogin(request.getParameter("username").toString(),
+        			request.getParameter("password").toString())) {
+                // Если пользователь уже авторизован, перенаправляем на mypage.jsp
+        		HttpSession session = request.getSession(true);
+        		session.setAttribute("username", request.getParameter("username").toString());
+        		request.setAttribute("path", "/files?path=C:/Users/" + request.getParameter("username").toString());
+            	response.sendRedirect(request.getContextPath() + "/files?path=C:/Users/" + request.getParameter("username").toString());
+            } else {
+                response.sendRedirect(request.getContextPath() + "/");
+            }
+    	}
 
     }
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)

@@ -19,6 +19,11 @@ public class RegistrationServlet extends HttpServlet {
     }
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+		if (request.getParameter("username").toString() == "" || request.getParameter("password").toString() == ""
+				|| request.getParameter("email").toString() == "") {
+			response.sendRedirect(request.getContextPath() + "/registration");
+			return;
+		}
 		Boolean result = UserCreationService.CreateUser(request.getParameter("username").toString(), request.getParameter("password").toString(), 
 				request.getParameter("email").toString());
 		if (result) response.sendRedirect(request.getContextPath() + "/auth");
