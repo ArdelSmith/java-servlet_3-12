@@ -9,7 +9,7 @@ import dbService.dataSets.UsersDataSet;
 import dbService.handler.DBHandler;
 public class UserLoginService{
 	public static Boolean TryLogin(String username, String password){
-		DBService d = DBHandler.getInstance();
+		DBService d = new DBService();
 		try {
 			UsersDataSet u = d.getUser(username);
 			return (u.getPassword().equals(password));

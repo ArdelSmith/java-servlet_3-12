@@ -32,7 +32,7 @@ public class UserCreationService{
 		{
 			return false;
 		}
-		DBService dbService = DBHandler.getInstance();
+		DBService dbService = new DBService();
         try {
             dbService.addUser(username, email, password);
             return true;
