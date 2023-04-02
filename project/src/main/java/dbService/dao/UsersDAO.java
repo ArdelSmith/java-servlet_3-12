@@ -27,6 +27,12 @@ public class UsersDAO {
             return result.getLong(1);
         });
     }
+    public UsersDataSet getUserByLogin(String login) throws SQLException {
+        return executor.execQuery("select * from users where user_name='" + login + "'", result -> {
+            result.next();
+            return new UsersDataSet(result.getLong(1), result.getString(2), result.getString(3), result.getString(4));
+        });
+    }
     public String getUserByEmail(String email) throws SQLException{
     	return executor.execQuery("select * from users where user_email='" + email + "'", result -> {
             result.next();

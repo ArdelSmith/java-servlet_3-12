@@ -11,13 +11,6 @@ import dbService.dao.*;
 
 public class Main {
     public static void main(String[] args) {
-        DBService dbService = new DBService();
-        dbService.printConnectInfo();
-        try {
-            UsersDAO u = new UsersDAO(dbService.getH2Connection());
-            u.createTable();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+        
     }
 }

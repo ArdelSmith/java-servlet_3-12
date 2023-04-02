@@ -3,8 +3,11 @@ package services;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
+import dbService.DBException;
 import dbService.DBService;
 import dbService.dao.*;
+import dbService.dataSets.UsersDataSet;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -28,20 +31,13 @@ public class UserCreationService{
 		{
 			return false;
 		}
-		UsersDAO d = new UsersDAO(DBService.getH2Connection());
-		try {
-			d.getUserId(username);
-			d.getUserByEmail(email);
-			return false;
-		}
-		catch (SQLException e) {
-			try {
-				d.insertUser(username, email, password);
-				return true;
-			}
-			catch (SQLException ignore) {
-			}
-		}
-		return false;
+		DBService dbService = new DBService();
+        try {
+            UsersDAO u = new UsersDAO(dbService.getH2Connection());
+            u.insertUser(username, email, password);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+		return true;
 	}
 }

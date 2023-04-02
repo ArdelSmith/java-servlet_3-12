@@ -1,6 +1,6 @@
 package dbService;
 
-import com.mysql.cj.jdbc.*;
+import com.mysql.cj.jdbc.*;	
 import dbService.dao.UsersDAO;
 import dbService.dataSets.UsersDataSet;
 import org.h2.jdbcx.JdbcDataSource;
@@ -44,6 +44,13 @@ public class DBService {
                 connection.setAutoCommit(true);
             } catch (SQLException ignore) {
             }
+        }
+    }
+    public UsersDataSet getUserByLogin(String login) throws DBException {
+        try {
+            return (new UsersDAO(connection).getUserByLogin(login));
+        } catch (SQLException e) {
+            throw new DBException(e);
         }
     }
 
