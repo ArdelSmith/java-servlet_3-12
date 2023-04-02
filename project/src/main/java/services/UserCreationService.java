@@ -7,6 +7,7 @@ import dbService.DBException;
 import dbService.DBService;
 import dbService.dao.*;
 import dbService.dataSets.UsersDataSet;
+import dbService.handler.DBHandler;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -31,12 +32,11 @@ public class UserCreationService{
 		{
 			return false;
 		}
-		DBService dbService = new DBService();
+		DBService dbService = DBHandler.getInstance();
         try {
-            UsersDAO u = new UsersDAO(dbService.getMysqlConnection());
-            u.insertUser(username, email, password);
+            dbService.addUser(username, email, password);
             return true;
-        } catch (SQLException e) {
+        } catch (DBException e) {
             e.printStackTrace();
         }
 		return false;

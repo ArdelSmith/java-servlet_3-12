@@ -1,63 +1,32 @@
 package dbService.dao;
 
 import dbService.dataSets.UsersDataSet;
-import dbService.executor.Executor;
-
-import java.sql.Connection;
-import java.sql.SQLException;
+import org.hibernate.Criteria;
+import org.hibernate.HibernateException;
+import org.hibernate.Session;
+import org.hibernate.criterion.Restrictions;
 
 public class UsersDAO {
 
-    private Executor executor;
+    private Session session;
 
-    public UsersDAO(Connection connection) {
-        this.executor = new Executor(connection);
-    }
-
-    public UsersDataSet get(long id) throws SQLException {
-        return executor.execQuery("select * from users where id=" + id, result -> {
-            result.next();
-            return new UsersDataSet(result.getString(1), result.getString(2), result.getString(3));
-        });
+    public UsersDAO(Session session) {
+        this.session = session;
     }
 
-    public UsersDataSet getUserByLogin(String login) throws SQLException {
-        return executor.execQuery("select * from users where user_name='" + login + "'", result -> {
-            result.next();
-            return new UsersDataSet(result.getString(1), result.getString(2), result.getString(3));
-        });
+    public UsersDataSet get(long id) throws HibernateException {
+        return (UsersDataSet) session.get(UsersDataSet.class, id);
     }
-    public String getUserByEmail(String email) throws SQLException{
-    	return executor.execQuery("select * from users where user_email='" + email + "'", result -> {
-            result.next();
-            return result.getString(2);
-    	});
+    public UsersDataSet get(String name) throws HibernateException {
+        return (UsersDataSet) session.get(UsersDataSet.class, name);
     }
-    public String getUserEmail(String name) throws SQLException {
-        return executor.execQuery("select * from users where user_name='" + name + "'", result -> {
-            result.next();
-            return result.getString(3);
-        });
+
+    public long getUserId(String name) throws HibernateException {
+        Criteria criteria = session.createCriteria(UsersDataSet.class);
+        return ((UsersDataSet) criteria.add(Restrictions.eq("name", name)).uniqueResult()).getId();
     }
     
-    public String getUserPassword(String name) throws SQLException {
-        return executor.execQuery("select * from users where user_name='" + name + "'", result -> {
-            result.next();
-            return result.getString(4);
-        });
-    }
-
-    public void insertUser(String name, String email, String password) throws SQLException {
-        executor.execUpdate("insert into users (user_name, user_email, user_pass) values ('" + name + "', '" +
-    email + "', '" + password + "')");
-    }
-
-    public void createTable() throws SQLException {
-        executor.execUpdate("create table if not exists users (user_name varchar(256)"
-        		+ ", user_email varchar(256), user_pass varchar(256), primary key (user_name))");
-    }
-
-    public void dropTable() throws SQLException {
-        executor.execUpdate("drop table users");
+    public long insertUser(String name, String email, String password) throws HibernateException {
+        return (Long) session.save(new UsersDataSet(name, email, password));
     }
 }
