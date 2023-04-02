@@ -66,7 +66,7 @@ public class DBService {
         try {
             Session session = sessionFactory.openSession();
             UsersDAO dao = new UsersDAO(session);
-            UsersDataSet dataSet = dao.get(name);
+            UsersDataSet dataSet = dao.get(dao.getUserId(name));
             session.close();
             return dataSet;
         } catch (HibernateException e) {
