@@ -14,7 +14,7 @@ public class DBService {
     private final Connection connection;
 
     public DBService() {
-        this.connection = getH2Connection();
+        this.connection = getMysqlConnection();
     }
 
     public UsersDataSet getUser(long id) throws DBException {
@@ -85,13 +85,11 @@ public class DBService {
                     append("jdbc:mysql://").        //db type
                     append("localhost:").           //host name
                     append("3306/").                //port
-                    append("db_example?").          //db name
-                    append("user=Adelith").          //login
-                    append("password=root");       //password
+                    append("usersdb");       //db name
 
             System.out.println("URL: " + url + "\n");
 
-            Connection connection = DriverManager.getConnection(url.toString());
+            Connection connection = DriverManager.getConnection(url.toString(), "root", "root");
             return connection;
         } catch (SQLException | InstantiationException | IllegalAccessException | ClassNotFoundException e) {
             e.printStackTrace();
@@ -101,8 +99,8 @@ public class DBService {
 
     public static Connection getH2Connection() {
         try {
-            String url = "jdbc:h2:./h2db";
-            String name = "Adelith";
+            String url = "jdbc:mysql://localhost:3306/usersdb";
+            String name = "root";
             String pass = "root";
             
             JdbcDataSource ds = new JdbcDataSource();

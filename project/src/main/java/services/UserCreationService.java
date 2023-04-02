@@ -33,11 +33,12 @@ public class UserCreationService{
 		}
 		DBService dbService = new DBService();
         try {
-            UsersDAO u = new UsersDAO(dbService.getH2Connection());
+            UsersDAO u = new UsersDAO(dbService.getMysqlConnection());
             u.insertUser(username, email, password);
+            return true;
         } catch (SQLException e) {
             e.printStackTrace();
         }
-		return true;
+		return false;
 	}
 }

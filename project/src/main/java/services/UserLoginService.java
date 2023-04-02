@@ -9,14 +9,13 @@ import dbService.dataSets.UsersDataSet;
 public class UserLoginService{
 	public static Boolean TryLogin(String username, String password){
 		DBService d = new DBService();
-		UsersDataSet u = null;
+		UsersDAO u = new UsersDAO(d.getMysqlConnection());
 		try {
-			u = d.getUserByLogin(username);
-			return (u.getPassword().equals(password));
+			UsersDataSet c = u.getUserByLogin(username);
+			return (c.getPassword().equals(password));
 		}
-		catch (DBException ignore) {
-			
+		catch (SQLException e) {
+			return false;
 		}
-		return false;
 	}
 }
