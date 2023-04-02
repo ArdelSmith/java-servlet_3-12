@@ -6,7 +6,6 @@ public class DBHandler {
     private static DBService instance = null;
 
     private DBHandler() {
-        // private constructor
     }
 
     public static DBService getInstance() {
@@ -15,6 +14,4 @@ public class DBHandler {
         }
         return instance;
     }
-
-    // other methods and properties
 }
