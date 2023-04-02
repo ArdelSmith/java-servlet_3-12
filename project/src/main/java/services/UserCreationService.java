@@ -7,7 +7,6 @@ import dbService.DBException;
 import dbService.DBService;
 import dbService.dao.*;
 import dbService.dataSets.UsersDataSet;
-import dbService.handler.DBHandler;
 
 import java.util.HashMap;
 import java.util.Map;
