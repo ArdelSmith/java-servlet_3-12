@@ -17,7 +17,7 @@ public class UsersDAO {
     public UsersDataSet get(long id) throws SQLException {
         return executor.execQuery("select * from users where id=" + id, result -> {
             result.next();
-            return new UsersDataSet(result.getLong(1), result.getString(2));
+            return new UsersDataSet(result.getLong(1), result.getString(2), result.getString(3), result.getString(4));
         });
     }
 
@@ -27,9 +27,29 @@ public class UsersDAO {
             return result.getLong(1);
         });
     }
+    public String getUserByEmail(String email) throws SQLException{
+    	return executor.execQuery("select * from users where user_email='" + email + "'", result -> {
+            result.next();
+            return result.getString(2);
+    	});
+    }
+    public String getUserEmail(String name) throws SQLException {
+        return executor.execQuery("select * from users where user_name='" + name + "'", result -> {
+            result.next();
+            return result.getString(3);
+        });
+    }
+    
+    public String getUserPassword(String name) throws SQLException {
+        return executor.execQuery("select * from users where user_name='" + name + "'", result -> {
+            result.next();
+            return result.getString(4);
+        });
+    }
 
-    public void insertUser(String name) throws SQLException {
-        executor.execUpdate("insert into users (user_name) values ('" + name + "')");
+    public void insertUser(String name, String email, String password) throws SQLException {
+        executor.execUpdate("insert into users (user_name, user_email, user_pass) values ('" + name + ", " +
+    email + ", " + password + "')");
     }
 
     public void createTable() throws SQLException {

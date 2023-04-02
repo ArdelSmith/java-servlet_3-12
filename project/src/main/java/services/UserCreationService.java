@@ -1,17 +1,13 @@
 package services;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
+
+import dbService.DBService;
+import dbService.dao.*;
 import java.util.HashMap;
 import java.util.Map;
 
-class Data{
-	public static Map<String, String> passwords = new HashMap<String, String>();
-	public static Map<String, String> emails = new HashMap<String, String>();
-	public static void AddUser(User user) {
-		passwords.put(user.username, user.password);
-		emails.put(user.email, user.username);
-	}
-}
 class User {
 	public String username;
 	public String password;
@@ -32,12 +28,20 @@ public class UserCreationService{
 		{
 			return false;
 		}
-		for (int i = 0; i < Data.passwords.size(); i++) {
-			if (Data.emails.containsKey(email) || Data.emails.containsValue(username)) {
-				return false;
+		UsersDAO d = new UsersDAO(DBService.getH2Connection());
+		try {
+			d.getUserId(username);
+			d.getUserByEmail(email);
+			return false;
+		}
+		catch (SQLException e) {
+			try {
+				d.insertUser(username, email, password);
+				return true;
+			}
+			catch (SQLException ignore) {
 			}
 		}
-		Data.AddUser(new User(username, password, email));
-		return true;
+		return false;
 	}
 }

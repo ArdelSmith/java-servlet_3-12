@@ -1,13 +1,20 @@
 package services;
+import java.sql.SQLException;
+
+import dbService.DBService;
 import services.UserCreationService;
+import dbService.dao.*;
 public class UserLoginService{
 	public static Boolean TryLogin(String username, String password){
 		User user = new User(username, password);
-		if (Data.emails.containsValue(user.username)) {
-			String pass = Data.passwords.get(user.username);
-			if (pass.equals(user.password)) return true;
-			else return false;
+		UsersDAO d = new UsersDAO(DBService.getH2Connection());
+		try {
+			String pass = d.getUserPassword(username);
+			return (pass.equals(password));
 		}
-		else return false;
+		catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return false;
 	}
 }
