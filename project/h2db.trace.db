@@ -1,0 +1,30 @@
+2023-04-02 16:00:08 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLNonTransientException: Неизвестный тип данных: 
+Unknown data type: ; SQL statement:
+create table if not exists users (id bigint auto_increment, user_name varchar(256), email varchar(256), password (varchar(256), primary key (id)) [50004-200]
+	at org.h2.message.DbException.getJdbcSQLException(DbException.java:505)
+	at org.h2.message.DbException.getJdbcSQLException(DbException.java:429)
+	at org.h2.message.DbException.get(DbException.java:205)
+	at org.h2.message.DbException.get(DbException.java:181)
+	at org.h2.command.Parser.parseColumnWithType(Parser.java:5971)
+	at org.h2.command.Parser.parseColumnForTable(Parser.java:5697)
+	at org.h2.command.Parser.parseTableColumnDefinition(Parser.java:8442)
+	at org.h2.command.Parser.parseCreateTable(Parser.java:8379)
+	at org.h2.command.Parser.parseCreate(Parser.java:6276)
+	at org.h2.command.Parser.parsePrepared(Parser.java:903)
+	at org.h2.command.Parser.parse(Parser.java:843)
+	at org.h2.command.Parser.parse(Parser.java:815)
+	at org.h2.command.Parser.prepareCommand(Parser.java:738)
+	at org.h2.engine.Session.prepareLocal(Session.java:657)
+	at org.h2.engine.Session.prepareCommand(Session.java:595)
+	at org.h2.jdbc.JdbcConnection.prepareCommand(JdbcConnection.java:1235)
+	at org.h2.jdbc.JdbcStatement.executeInternal(JdbcStatement.java:212)
+	at org.h2.jdbc.JdbcStatement.execute(JdbcStatement.java:201)
+	at dbService.executor.Executor.execUpdate(Executor.java:24)
+	at dbService.dao.UsersDAO.createTable(UsersDAO.java:36)
+	at dbService.DBService.addUser(DBService.java:32)
+	at main.Main.main(Main.java:20)
+2023-04-02 16:05:44 jdbc[4]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Синтаксическая ошибка в выражении SQL "CREATE TABLE IF NOT EXISTS USERS (ID BIGINT AUTO_INCREMENT, USER_NAME VARCHAR(256),,[*] USER_EMAIL VARCHAR(256), USER_PASS VARCHAR(256), PRIMARY KEY (ID))"; ожидалось "identifier"
+Syntax error in SQL statement "CREATE TABLE IF NOT EXISTS USERS (ID BIGINT AUTO_INCREMENT, USER_NAME VARCHAR(256),,[*] USER_EMAIL VARCHAR(256), USER_PASS VARCHAR(256), PRIMARY KEY (ID))"; expected "identifier"; SQL statement:
+create table if not exists users (id bigint auto_increment, user_name varchar(256),, user_email varchar(256), user_pass varchar(256), primary key (id)) [42001-200]
